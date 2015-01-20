@@ -89,7 +89,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 
 			$paths = $property->getValue( $Shopp->Gateways );
 			// @see https://github.com/ingenesis/shopp/blob/1.3/Shopp.php#L193
-			$paths[] = Pronamic_WP_Pay_Plugin::$dirname . '/classes/Pronamic/Shopp/Gateways';
+			$paths[] = dirname( __FILE__ );
 
 			$property->setValue( $Shopp->Gateways, $paths );
 		}
