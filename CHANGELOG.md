@@ -8,6 +8,7 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 - 
 
 ## [1.0.3] - 2016-02-12
+- WordPress Coding Standards optimizations.
 - Added support for payment methods, improved error reporting.
 - Removed status code from redirect in status_update.
 

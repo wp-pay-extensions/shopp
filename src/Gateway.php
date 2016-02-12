@@ -275,9 +275,9 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$is_used = false;
 
 		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
-			$is_used = $purchase->gateway == self::NAME;
+			$is_used = self::NAME === $purchase->gateway;
 		} else {
-			$is_used = $purchase->gateway == __CLASS__;
+			$is_used = __CLASS__ === $purchase->gateway;
 		}
 
 		return $is_used;
@@ -340,7 +340,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		}
 
 		return array(
-			'' => _x( 'All', 'Payment method field', 'pronamic-ideal' )
+			'' => _x( 'All', 'Payment method field', 'pronamic-ideal' ),
 		);
 	}
 

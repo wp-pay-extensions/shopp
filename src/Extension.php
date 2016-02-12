@@ -1,11 +1,14 @@
 <?php
+
 /**
  * Title: WordPress pay extension Shopp
  * Description:
  * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
  * @version 1.0.0
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 	/**
@@ -103,7 +106,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 	 * @param Pronamic_Pay_Payment $payment
 	 */
 	public static function status_update( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
-		if ( $payment->get_source() == self::SLUG && self::is_shopp_supported() ) {
+		if ( $payment->get_source() === self::SLUG && self::is_shopp_supported() ) {
 			global $Shopp;
 
 			$id = $payment->get_source_id();
