@@ -3,10 +3,12 @@
 /**
  * Title: Shopp
  * Description:
- * Copyright: Copyright (c) 2005 - 2015
+ * Copyright: Copyright (c) 2005 - 2016
  * Company: Pronamic
+ *
  * @author Remco Tolsma
  * @version 1.0.0
+ * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 	/**
@@ -117,16 +119,18 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 			$is_paid = ! in_array(
 				$purchase->txnstatus,
 				array(
-					self::PAYMENT_STATUS_PENDING
-				)
+					self::PAYMENT_STATUS_PENDING,
+				),
+				true
 			);
 		} else {
 			// In Shopp >= 1.2 an paid purchase has the 'captured' status
 			$is_paid = in_array(
 				$purchase->txnstatus,
 				array(
-					self::PAYMENT_STATUS_CAPTURED
-				)
+					self::PAYMENT_STATUS_CAPTURED,
+				),
+				true
 			);
 		}
 

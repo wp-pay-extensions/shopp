@@ -263,9 +263,9 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		$is_used = false;
 
 		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
-			$is_used = $purchase->gateway == self::NAME;
+			$is_used = self::NAME === $purchase->gateway;
 		} else {
-			$is_used = $purchase->gateway == __CLASS__;
+			$is_used = __CLASS__ === $purchase->gateway;
 		}
 
 		return $is_used;

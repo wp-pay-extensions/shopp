@@ -52,11 +52,18 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	//////////////////////////////////////////////////
 
 	/**
-	 * The unique pay gateay config ID
+	 * The unique pay gateway config ID
 	 *
 	 * @var string
 	 */
 	private $config_id;
+
+	/**
+	 * The payment method
+	 *
+	 * @var string
+	 */
+	private $payment_method;
 
 	//////////////////////////////////////////////////
 
@@ -71,6 +78,9 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		// Config ID
 		$this->config_id = $this->settings['config_id'];
+
+		// Payment method
+		$this->payment_method = $this->settings['payment_method'];
 
 		// Order processing
 		//add_filter('shopp_purchase_order_processing', array($this, 'orderProcessing'), 20, 2);
@@ -236,14 +246,16 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
+			$gateway->set_payment_method( $this->payment_method );
+
 			$data = new Pronamic_WP_Pay_Extensions_Shopp_PaymentData( $purchase, $this );
 
-			$payment = Pronamic_WP_Pay_Plugin::start( $this->config_id, $gateway, $data );
+			$payment = Pronamic_WP_Pay_Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
 
 			$error = $gateway->get_error();
 
 			if ( is_wp_error( $error ) ) {
-				// @todo what todo?
+				Pronamic_WP_Pay_Plugin::render_errors( $error );
 
 				exit;
 			} else {
@@ -263,9 +275,9 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$is_used = false;
 
 		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
-			$is_used = $purchase->gateway == self::NAME;
+			$is_used = self::NAME === $purchase->gateway;
 		} else {
-			$is_used = $purchase->gateway == __CLASS__;
+			$is_used = __CLASS__ === $purchase->gateway;
 		}
 
 		return $is_used;
@@ -282,6 +294,8 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
+			$gateway->set_payment_method( $this->payment_method );
+
 			$result .= '<div id="pronamic_ideal_inputs">';
 			$result .= $gateway->get_input_html();
 			$result .= '</div>';
@@ -312,6 +326,25 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	//////////////////////////////////////////////////
 
 	/**
+	 * Payment method select options
+	 */
+	public function get_payment_method_select_options() {
+		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
+
+		if ( $gateway ) {
+			$payment_method_field = $gateway->get_payment_method_field();
+
+			if ( $payment_method_field ) {
+				return $payment_method_field['choices'][0]['options'];
+			}
+		}
+
+		return array(
+			'' => _x( 'All', 'Payment method field', 'pronamic-ideal' ),
+		);
+	}
+
+	/**
 	 * Settings
 	 */
 	public function settings() {
@@ -322,6 +355,15 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 			'keyed'    => true,
 			'label'    => __( 'Select configuration', 'pronamic_ideal' ),
 			'selected' => $this->config_id,
+		), $options );
+
+		$options = $this->get_payment_method_select_options();
+
+		$this->ui->menu( 1, array(
+			'name'     => 'payment_method',
+			'keyed'    => true,
+			'label'    => __( 'Select payment method', 'pronamic_ideal' ),
+			'selected' => $this->payment_method,
 		), $options );
 	}
 }

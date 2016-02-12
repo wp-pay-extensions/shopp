@@ -20,7 +20,8 @@ module.exports = function( grunt ) {
 				],
 			},
 			options: {
-				standard: 'phpcs.ruleset.xml'
+				standard: 'phpcs.ruleset.xml',
+				showSniffCodes: true
 			}
 		},
 
@@ -59,5 +60,5 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-phpunit' );
 
 	// Default task(s).
-	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs', 'phpunit' ] );
+	grunt.registerTask( 'default', [ 'jshint', 'phplint', 'phpmd', 'phpcs' ] );
 };
