@@ -117,22 +117,22 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		return $this->purchase->email;
 	}
 
-	public function getCustomerName() {
+	public function get_customer_name() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->firstname . ' ' . $purchase->lastname;
 	}
 
-	public function getOwnerAddress() {
+	public function get_address() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->address;
 	}
 
-	public function getOwnerCity() {
+	public function get_city() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->city;
 	}
 
-	public function getOwnerZip() {
+	public function get_zip() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->postcode;
 	}
