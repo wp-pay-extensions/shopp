@@ -7,6 +7,9 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## [Unreleased][unreleased]
 - 
 
+## [1.0.4] - 2016-04-12
+- No longer use camelCase for payment data.
+
 ## [1.0.3] - 2016-02-12
 - WordPress Coding Standards optimizations.
 - Added support for payment methods, improved error reporting.
@@ -22,7 +25,8 @@ This projects adheres to [Semantic Versioning](http://semver.org/) and [Keep a C
 ## 1.0.0 - 2015-02-12
 - First release.
 
-[unreleased]: https://github.com/wp-pay-extensions/shopp/compare/1.0.3...HEAD
+[unreleased]: https://github.com/wp-pay-extensions/shopp/compare/1.0.4...HEAD
+[1.0.4]: https://github.com/wp-pay-extensions/shopp/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/wp-pay-extensions/shopp/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/wp-pay-extensions/shopp/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/wp-pay-extensions/shopp/compare/1.0.0...1.0.1
