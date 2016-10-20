@@ -12,5 +12,7 @@
 
 		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
 		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+
+		<exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect" />
 	</rule>
 </ruleset>
