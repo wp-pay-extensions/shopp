@@ -1,6 +1,6 @@
 {
   "name": "shopp",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Shopp driver for the WordPress payment processing library.",
   "repository": {
     "type": "git",
