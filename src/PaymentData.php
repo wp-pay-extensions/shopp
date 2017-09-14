@@ -7,7 +7,7 @@
  * Company: Pronamic
  *
  * @author Remco Tolsma
- * @version 1.0.4
+ * @version 1.0.7
  * @since 1.0.0
  */
 class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_PaymentData {
@@ -117,9 +117,19 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		return $this->purchase->email;
 	}
 
+	public function get_first_name() {
+		// @see /shopp/core/model/Purchase.php
+		return $this->purchase->firstname;
+	}
+
+	public function get_last_name() {
+		// @see /shopp/core/model/Purchase.php
+		return $this->purchase->lastname;
+	}
+
 	public function get_customer_name() {
 		// @see /shopp/core/model/Purchase.php
-		return $this->purchase->firstname . ' ' . $purchase->lastname;
+		return $this->purchase->firstname . ' ' . $this->purchase->lastname;
 	}
 
 	public function get_address() {
