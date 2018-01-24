@@ -1,4 +1,6 @@
 <?php
+use Pronamic\WordPress\Pay\Plugin;
+
 /**
  * Pronamic iDEAL
  *
@@ -243,19 +245,19 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		}
 
 		// Check gateway
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
+		$gateway = Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
 			$gateway->set_payment_method( $this->payment_method );
 
 			$data = new Pronamic_WP_Pay_Extensions_Shopp_PaymentData( $purchase, $this );
 
-			$payment = Pronamic_WP_Pay_Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
+			$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
 
 			$error = $gateway->get_error();
 
 			if ( is_wp_error( $error ) ) {
-				Pronamic_WP_Pay_Plugin::render_errors( $error );
+				Plugin::render_errors( $error );
 
 				exit;
 			} else {
@@ -291,7 +293,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	public function inputs( $inputs ) {
 		$result = '';
 
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
+		$gateway = Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
 			$gateway->set_payment_method( $this->payment_method );
@@ -329,7 +331,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 * Payment method select options
 	 */
 	public function get_payment_method_select_options() {
-		$gateway = Pronamic_WP_Pay_Plugin::get_gateway( $this->config_id );
+		$gateway = Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
 			$payment_method_field = $gateway->get_payment_method_field();
@@ -348,7 +350,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 * Settings
 	 */
 	public function settings() {
-		$options = Pronamic_WP_Pay_Plugin::get_config_select_options();
+		$options = Plugin::get_config_select_options();
 
 		$this->ui->menu( 0, array(
 			'name'     => 'config_id',
