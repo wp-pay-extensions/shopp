@@ -1,4 +1,5 @@
 <?php
+
 use Pronamic\WordPress\Pay\Plugin;
 
 /**
@@ -84,11 +85,11 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		// @see /shopp/core/model/Gateway.php#L122
 		$name = sanitize_key( __CLASS__ );
 
-		add_action( 'shopp_' . $name . '_sale',    array( $this, 'sale' ) );
-		add_action( 'shopp_' . $name . '_auth',    array( $this, 'auth' ) );
+		add_action( 'shopp_' . $name . '_sale', array( $this, 'sale' ) );
+		add_action( 'shopp_' . $name . '_auth', array( $this, 'auth' ) );
 		add_action( 'shopp_' . $name . '_capture', array( $this, 'capture' ) );
-		add_action( 'shopp_' . $name . '_refund',  array( $this, 'refund' ) );
-		add_action( 'shopp_' . $name . '_void',    array( $this, 'void' ) );
+		add_action( 'shopp_' . $name . '_refund', array( $this, 'refund' ) );
+		add_action( 'shopp_' . $name . '_void', array( $this, 'void' ) );
 	}
 
 	//////////////////////////////////////////////////
@@ -96,7 +97,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	/**
 	 * Add actions
 	 */
-	function actions() {
+	public function actions() {
 		/*
 		 * In case of iDEAL advanced we have to store the chosen issuer ID on the
 		 * checkout page. We will store the chosen issuer ID in the 'shopp_checkout_processed'
@@ -140,20 +141,20 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * @param OrderEventMessage $event
 	 */
-	function auth( $event ) {
-		$Order       = $this->Order;
-		$OrderTotals = $Order->Cart->Totals;
-		$Billing     = $Order->Billing;
-		$Paymethod   = $Order->paymethod();
+	public function auth( $event ) {
+		$order        = $this->Order;
+		$order_totals = $order->Cart->Totals;
+		$billing      = $order->Billing;
+		$paymethod    = $order->paymethod();
 
 		shopp_add_order_event( $event->order, 'authed', array(
 			'txnid'     => time(),
-			'amount'    => $OrderTotals->total,
+			'amount'    => $order_totals->total,
 			'fees'      => 0,
-			'gateway'   => $Paymethod->processor,
-			'paymethod' => $Paymethod->label,
-			'paytype'   => $Billing->cardtype,
-			'payid'     => $Billing->card,
+			'gateway'   => $paymethod->processor,
+			'paymethod' => $paymethod->label,
+			'paytype'   => $billing->cardtype,
+			'payid'     => $billing->card,
 		) );
 	}
 
@@ -162,8 +163,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * @param OrderEventMessage $event
 	 */
-	function capture( OrderEventMessage $event ) {
-
+	public function capture( OrderEventMessage $event ) {
 	}
 
 	/**
@@ -171,8 +171,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * @param OrderEventMessage $event
 	 */
-	function refund( OrderEventMessage $event ) {
-
+	public function refund( OrderEventMessage $event ) {
 	}
 
 	/**
@@ -180,8 +179,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * @param OrderEventMessage $event
 	 */
-	function void( OrderEventMessage $event ) {
-
+	public function void( OrderEventMessage $event ) {
 	}
 
 	//////////////////////////////////////////////////
@@ -193,6 +191,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		global $Shopp;
 
 		$issuer_id = filter_input( INPUT_POST, 'pronamic_ideal_issuer_id', FILTER_SANITIZE_STRING );
+
 		if ( ! empty( $issuer_id ) ) {
 			$Shopp->Order->PronamicIDealIssuerId = $issuer_id;
 		}
@@ -210,7 +209,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	public function process_order() {
 		// Sets transaction information to create the purchase record
 		// This call still exists for backward-compatibility (< 1.2)
-		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
+		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
 			$this->Order->transaction( $this->txnid(), Pronamic_Shopp_Shopp::PAYMENT_STATUS_PENDING );
 		}
 
@@ -224,6 +223,8 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * In Shopp version 1.1.9 the 'shopp_order_success' the purchase is given as first parameter,
 	 * in Shopp version 1.2+ the 'shopp_order_success' the purchase is not passed as parameter anymore
+	 *
+	 * @param Purchase $purchase
 	 */
 	public function order_success( $purchase = null ) {
 		// Check if the purchases is passed as first parameter, if not we
@@ -237,20 +238,22 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		// Check gateway
 		$gateway = Plugin::get_gateway( $this->config_id );
 
-		if ( $gateway ) {
-			$data = new Pronamic_Shopp_PaymentData( $purchase, $this );
+		if ( ! $gateway ) {
+			return;
+		}
 
-			$payment = Plugin::start( $this->config_id, $gateway, $data );
+		$data = new Pronamic_Shopp_PaymentData( $purchase, $this );
 
-			$error = $gateway->get_error();
+		$payment = Plugin::start( $this->config_id, $gateway, $data );
 
-			if ( is_wp_error( $error ) ) {
-				// @todo what todo?
+		$error = $gateway->get_error();
 
-				exit;
-			} else {
-				$gateway->redirect( $payment );
-			}
+		if ( is_wp_error( $error ) ) {
+			// @todo what todo?
+
+			exit;
+		} else {
+			$gateway->redirect( $payment );
 		}
 	}
 
@@ -259,12 +262,12 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	/**
 	 * Is used
 	 *
-	 * @param unknown_type $purchase
+	 * @param Purchase $purchase
+	 *
+	 * @return bool
 	 */
 	private static function is_used( $purchase ) {
-		$is_used = false;
-
-		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
+		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
 			$is_used = self::NAME === $purchase->gateway;
 		} else {
 			$is_used = __CLASS__ === $purchase->gateway;
@@ -277,6 +280,10 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 	/**
 	 * Inputs
+	 *
+	 * @param $inputs
+	 *
+	 * @return string
 	 */
 	public function inputs( $inputs ) {
 		$result = '';
