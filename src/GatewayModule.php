@@ -1,9 +1,11 @@
 <?php
 
+use Pronamic\WordPress\Pay\Extensions\Shopp\PaymentData;
+use Pronamic\WordPress\Pay\Extensions\Shopp\Shopp;
 use Pronamic\WordPress\Pay\Plugin;
 
 /**
- * Pronamic iDEAL
+ * Pronamic
  *
  * @author Pronamic
  * @version 1.0
@@ -19,7 +21,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 *
 	 * @var string
 	 */
-	const NAME = 'Pronamic iDEAL';
+	const NAME = 'Pronamic';
 
 	//////////////////////////////////////////////////
 	// Supported features
@@ -209,7 +211,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	public function process_order() {
 		// Sets transaction information to create the purchase record
 		// This call still exists for backward-compatibility (< 1.2)
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
+		if ( Shopp::version_compare( '1.2', '<' ) ) {
 			$this->Order->transaction( $this->txnid(), Pronamic_Shopp_Shopp::PAYMENT_STATUS_PENDING );
 		}
 
@@ -242,7 +244,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 			return;
 		}
 
-		$data = new Pronamic_Shopp_PaymentData( $purchase, $this );
+		$data = new PaymentData( $purchase, $this );
 
 		$payment = Plugin::start( $this->config_id, $gateway, $data );
 
@@ -267,7 +269,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 * @return bool
 	 */
 	private static function is_used( $purchase ) {
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
+		if ( Shopp::version_compare( '1.2', '<' ) ) {
 			$is_used = self::NAME === $purchase->gateway;
 		} else {
 			$is_used = __CLASS__ === $purchase->gateway;

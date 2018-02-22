@@ -1,8 +1,12 @@
 <?php
 
-use Pronamic\WordPress\Pay\Payments\PaymentData;
+namespace Pronamic\WordPress\Pay\Extensions\Shopp;
+
+use GatewayFramework;
+use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
 use Pronamic\WordPress\Pay\Payments\Item;
 use Pronamic\WordPress\Pay\Payments\Items;
+use Purchase;
 
 /**
  * Title: Shopp payment data
@@ -10,11 +14,11 @@ use Pronamic\WordPress\Pay\Payments\Items;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.0.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends PaymentData {
+class PaymentData extends Pay_PaymentData {
 	/**
 	 * Purchase
 	 *
@@ -36,7 +40,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends PaymentData {
 	/**
 	 * Constructs and initialize an Shopp iDEAL data proxy
 	 *
-	 * @param Purchase $purchase
+	 * @param Purchase         $purchase
 	 * @param GatewayFramework $gateway
 	 */
 	public function __construct( $purchase, $gateway ) {

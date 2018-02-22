@@ -1,7 +1,13 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\Shopp;
+
+use ModuleFile;
 use Pronamic\WordPress\Pay\Core\Statuses;
 use Pronamic\WordPress\Pay\Payments\Payment;
+use Pronamic_WP_Pay_Extensions_Shopp_Gateway;
+use Purchase;
+use ReflectionClass;
 
 /**
  * Title: WordPress pay extension Shopp
@@ -9,11 +15,11 @@ use Pronamic\WordPress\Pay\Payments\Payment;
  * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.0.6
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_Shopp_Extension {
+class Extension {
 	/**
 	 * Slug
 	 */
@@ -67,7 +73,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 		class_alias( 'Pronamic_WP_Pay_Extensions_Shopp_Gateway', 'Pronamic_Shopp_Gateways_IDeal_IDeal' );
 
 		// Add gateway
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.3', '<' ) ) {
+		if ( Shopp::version_compare( '1.3', '<' ) ) {
 			// Shop 1.2.9 (or lower)
 			// @see https://github.com/ingenesis/shopp/blob/1.2.9/core/model/Modules.php#L123
 			$path = dirname( __FILE__ );
@@ -108,9 +114,10 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 	/**
 	 * Update lead status of the specified advanced payment
 	 *
-	 * @param Pronamic_Pay_Payment $payment
+	 * @param Payment $payment
+	 * @param bool    $can_redirect
 	 */
-	public static function status_update( Pronamic_Pay_Payment $payment, $can_redirect = false ) {
+	public static function status_update( Payment $payment, $can_redirect = false ) {
 		if ( $payment->get_source() !== self::SLUG || ! self::is_shopp_supported() ) {
 			return;
 		}
@@ -119,9 +126,9 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 
 		$purchase = new Purchase( $id );
 		$gateway  = new Pronamic_WP_Pay_Extensions_Shopp_Gateway();
-		$data     = new Pronamic_WP_Pay_Extensions_Shopp_PaymentData( $purchase, $gateway );
+		$data     = new PaymentData( $purchase, $gateway );
 
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::is_purchase_paid( $purchase ) ) {
+		if ( Shopp::is_purchase_paid( $purchase ) ) {
 			return;
 		}
 
@@ -129,31 +136,31 @@ class Pronamic_WP_Pay_Extensions_Shopp_Extension {
 
 		switch ( $payment->status ) {
 			case Statuses::CANCELLED:
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::update_purchase_status( $purchase, Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_CANCELLED );
+				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_CANCELLED );
 
 				$url = $data->get_cancel_url();
 
 				break;
 			case Statuses::EXPIRED:
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::update_purchase_status( $purchase, Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_EXPIRED );
+				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_EXPIRED );
 
 				break;
 			case Statuses::FAILURE:
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::update_purchase_status( $purchase, Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_FAILURE );
+				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_FAILURE );
 
 				$url = $data->get_error_url();
 
 				break;
 			case Statuses::SUCCESS:
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::update_purchase_status( $purchase, Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_CAPTURED );
+				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_CAPTURED );
 
 				$url = $data->get_success_url();
 
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::resession();
+				Shopp::resession();
 
 				break;
 			case Statuses::OPEN:
-				Pronamic_WP_Pay_Extensions_Shopp_Shopp::update_purchase_status( $purchase, Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_OPEN );
+				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_OPEN );
 
 				break;
 		}

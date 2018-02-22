@@ -1,9 +1,11 @@
 <?php
 
+use Pronamic\WordPress\Pay\Extensions\Shopp\PaymentData;
+use Pronamic\WordPress\Pay\Extensions\Shopp\Shopp;
 use Pronamic\WordPress\Pay\Plugin;
 
 /**
- * Pronamic iDEAL
+ * Pronamic Pay
  *
  * @author Pronamic
  * @version 1.0.0
@@ -19,7 +21,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 *
 	 * @var string
 	 */
-	const NAME = 'Pronamic iDEAL';
+	const NAME = 'Pronamic Pay';
 
 	//////////////////////////////////////////////////
 	// Supported features
@@ -219,8 +221,8 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	public function process_order() {
 		// Sets transaction information to create the purchase record
 		// This call still exists for backward-compatibility (< 1.2)
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
-			$this->Order->transaction( $this->txnid(), Pronamic_WP_Pay_Extensions_Shopp_Shopp::PAYMENT_STATUS_PENDING );
+		if ( Shopp::version_compare( '1.2', '<' ) ) {
+			$this->Order->transaction( $this->txnid(), Shopp::PAYMENT_STATUS_PENDING );
 		}
 
 		return true;
@@ -254,7 +256,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		$gateway->set_payment_method( $this->payment_method );
 
-		$data = new Pronamic_WP_Pay_Extensions_Shopp_PaymentData( $purchase, $this );
+		$data = new PaymentData( $purchase, $this );
 
 		$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
 
@@ -279,7 +281,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 * @return bool
 	 */
 	private static function is_used( $purchase ) {
-		if ( Pronamic_WP_Pay_Extensions_Shopp_Shopp::version_compare( '1.2', '<' ) ) {
+		if ( Shopp::version_compare( '1.2', '<' ) ) {
 			$is_used = self::NAME === $purchase->gateway;
 		} else {
 			$is_used = __CLASS__ === $purchase->gateway;
