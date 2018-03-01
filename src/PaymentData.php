@@ -35,8 +35,6 @@ class PaymentData extends Pay_PaymentData {
 	 */
 	private $gateway;
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Constructs and initialize an Shopp iDEAL data proxy
 	 *
@@ -50,8 +48,6 @@ class PaymentData extends Pay_PaymentData {
 		$this->gateway  = $gateway;
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Get source indicator
 	 *
@@ -61,8 +57,6 @@ class PaymentData extends Pay_PaymentData {
 	public function get_source() {
 		return 'shopp';
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get description
@@ -106,19 +100,11 @@ class PaymentData extends Pay_PaymentData {
 		return $items;
 	}
 
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
-
 	public function get_currency_alphabetic_code() {
 		// @see /shopp/core/model/Lookup.php#L58
 		// @see /shopp/core/model/Gateway.php
 		return $this->gateway->baseop['currency']['code'];
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		// @see /shopp/core/model/Purchase.php
@@ -155,13 +141,12 @@ class PaymentData extends Pay_PaymentData {
 		return $this->purchase->postcode;
 	}
 
-	//////////////////////////////////////////////////
-	// URL's
-	//
-	// shoppurl default pages:
-	// catalog, account, cart, checkout, confirm, thanks
-	//////////////////////////////////////////////////
-
+	/**
+	 * URL's
+	 *
+	 * shoppurl default pages:
+	 * catalog, account, cart, checkout, confirm, thanks
+	 */
 	public function get_normal_return_url() {
 		// @see /shopp/core/functions.php#L1873
 		// @see /shopp/core/flow/Storefront.php#L1364
@@ -185,10 +170,6 @@ class PaymentData extends Pay_PaymentData {
 		// @see /shopp/core/flow/Storefront.php#L1364
 		return shoppurl( array( 'messagetype' => 'error' ), 'thanks' );
 	}
-
-	//////////////////////////////////////////////////
-	// Issuer
-	//////////////////////////////////////////////////
 
 	public function get_issuer_id() {
 		global $Shopp;

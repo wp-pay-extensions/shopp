@@ -23,10 +23,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 */
 	const NAME = 'Pronamic';
 
-	//////////////////////////////////////////////////
-	// Supported features
-	//////////////////////////////////////////////////
-
 	/**
 	 * Flag to let Shopp force auth-only order processing
 	 *
@@ -41,10 +37,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 */
 	public $captures = true;
 
-	//////////////////////////////////////////////////
-	// Config settings
-	//////////////////////////////////////////////////
-
 	/**
 	 * Flag to let Shopp know that this gateway module doesn't require an secure connection
 	 *
@@ -52,18 +44,12 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	 */
 	public $secure = false;
 
-	//////////////////////////////////////////////////
-	// Other
-	//////////////////////////////////////////////////
-
 	/**
 	 * The unique pay gateay config ID
 	 *
 	 * @var string
 	 */
 	private $config_id;
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Constructs and initialize an iDEAL gateway module
@@ -93,8 +79,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		add_action( 'shopp_' . $name . '_refund', array( $this, 'refund' ) );
 		add_action( 'shopp_' . $name . '_void', array( $this, 'void' ) );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Add actions
@@ -126,8 +110,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		add_action( 'shopp_order_success', array( $this, 'order_success' ) );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Sale
@@ -184,8 +166,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 	public function void( OrderEventMessage $event ) {
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Checkout processed
 	 */
@@ -198,8 +178,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 			$Shopp->Order->PronamicIDealIssuerId = $issuer_id;
 		}
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Process order
@@ -217,8 +195,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		return true;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Order success
@@ -259,8 +235,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 		}
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Is used
 	 *
@@ -277,8 +251,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		return $is_used;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Inputs
@@ -319,8 +291,6 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		return $inputs . $result;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Settings

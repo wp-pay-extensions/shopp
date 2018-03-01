@@ -25,8 +25,6 @@ class Extension {
 	 */
 	const SLUG = 'shopp';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Bootstrap
 	 */
@@ -34,8 +32,6 @@ class Extension {
 		// Actions
 		add_action( 'shopp_init', array( __CLASS__, 'shopp_init' ) );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Initialize the Shopp Add-On
@@ -49,8 +45,6 @@ class Extension {
 		add_filter( 'pronamic_payment_source_url_' . self::SLUG, array( __CLASS__, 'source_url' ), 10, 2 );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Checks if Shopp is supported
 	 *
@@ -59,8 +53,6 @@ class Extension {
 	public static function is_shopp_supported() {
 		return defined( 'SHOPP_VERSION' );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Add the Shopp gateway
@@ -108,8 +100,6 @@ class Extension {
 			$property->setValue( $Shopp->Gateways, $paths );
 		}
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Update lead status of the specified advanced payment
@@ -171,8 +161,6 @@ class Extension {
 			exit;
 		}
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Source text.

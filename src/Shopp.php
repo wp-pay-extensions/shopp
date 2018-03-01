@@ -58,8 +58,6 @@ class Shopp {
 	 */
 	const PAYMENT_STATUS_OPEN = 'OPEN';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Payment status authed
 	 *
@@ -76,8 +74,6 @@ class Shopp {
 	 */
 	const PAYMENT_STATUS_CAPTURED = 'captured';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Check if Shopp is active (Automattic/developer style)
 	 *
@@ -89,8 +85,6 @@ class Shopp {
 	public static function is_active() {
 		return defined( 'SHOPP_VERSION' );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Version compare
@@ -110,8 +104,6 @@ class Shopp {
 
 		return $result;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Check if the purchase is paid
@@ -144,8 +136,6 @@ class Shopp {
 		return $is_paid;
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Update purchase status
 	 *
@@ -161,8 +151,6 @@ class Shopp {
 			array( 'id' => $purchase->id )
 		);
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Resession

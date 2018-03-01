@@ -23,10 +23,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 */
 	const NAME = 'Pronamic Pay';
 
-	//////////////////////////////////////////////////
-	// Supported features
-	//////////////////////////////////////////////////
-
 	/**
 	 * Flag to let Shopp force auth-only order processing
 	 *
@@ -41,20 +37,12 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 */
 	public $captures = true;
 
-	//////////////////////////////////////////////////
-	// Config settings
-	//////////////////////////////////////////////////
-
 	/**
 	 * Flag to let Shopp know that this gateway module doesn't require an secure connection
 	 *
 	 * @var boolean
 	 */
 	public $secure = false;
-
-	//////////////////////////////////////////////////
-	// Other
-	//////////////////////////////////////////////////
 
 	/**
 	 * The unique pay gateway config ID
@@ -69,8 +57,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 * @var string
 	 */
 	private $payment_method;
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Constructs and initialize an iDEAL gateway module
@@ -104,8 +90,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		add_action( 'shopp_' . $name . '_void', array( $this, 'void' ) );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Add actions
 	 */
@@ -136,8 +120,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		add_action( 'shopp_order_success', array( $this, 'order_success' ) );
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Sale
@@ -194,8 +176,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	public function void( OrderEventMessage $event ) {
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Checkout processed
 	 */
@@ -208,8 +188,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 			$Shopp->Order->PronamicIDealIssuerId = $issuer_id;
 		}
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Process order
@@ -227,8 +205,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		return true;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Order success
@@ -271,8 +247,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		}
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Is used
 	 *
@@ -289,8 +263,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		return $is_used;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Inputs
@@ -333,8 +305,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		return $inputs . $result;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Payment method select options
