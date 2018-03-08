@@ -144,7 +144,7 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * URL's
 	 *
-	 * shoppurl default pages:
+	 * Shoppurl default pages:
 	 * catalog, account, cart, checkout, confirm, thanks
 	 */
 	public function get_normal_return_url() {
