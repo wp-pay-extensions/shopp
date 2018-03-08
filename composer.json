@@ -43,10 +43,5 @@
 		"wp-coding-standards/wpcs": "^0.10.0",
 		"phpmd/phpmd": "^2.4",
 		"phpunit/phpunit": "^4.8"
-	},
-    "scripts": {
-        "post-autoload-dump": [
-            "if [[ -d vendor/wp-coding-standards/wpcs ]]; then vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs; fi"
-        ]
-    }
+	}
 }

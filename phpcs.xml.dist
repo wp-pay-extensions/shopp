@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <ruleset name="WordPress Pay Shopp rules">
+	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
 	<rule ref="WordPress">
 		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
 
