@@ -313,11 +313,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$gateway = Plugin::get_gateway( $this->config_id );
 
 		if ( $gateway ) {
-			$payment_method_field = $gateway->get_payment_method_field();
-
-			if ( $payment_method_field ) {
-				return $payment_method_field['choices'][0]['options'];
-			}
+			return $gateway->get_payment_method_field_options();
 		}
 
 		return array(
