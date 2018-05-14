@@ -7,11 +7,11 @@ use Pronamic\WordPress\Pay\Plugin;
 /**
  * Pronamic Pay
  *
- * @author Pronamic
- * @version 1.0.0
- * @copyright Pronamic
- * @package shopp
- * @since 1.1.9
+ * @author     Pronamic
+ * @version    2.0.0
+ * @copyright  Pronamic
+ * @package    shopp
+ * @since      1.1.9
  * @subpackage Pronamic_Shopp_IDeal_GatewayModule
  **/
 
