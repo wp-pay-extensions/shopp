@@ -1,16 +1,24 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\Shopp;
+
+use GatewayFramework;
+use Pronamic\WordPress\Pay\Payments\PaymentData as Pay_PaymentData;
+use Pronamic\WordPress\Pay\Payments\Item;
+use Pronamic\WordPress\Pay\Payments\Items;
+use Purchase;
+
 /**
  * Title: Shopp payment data
  * Description:
- * Copyright: Copyright (c) 2005 - 2017
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.0.7
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_PaymentData {
+class PaymentData extends Pay_PaymentData {
 	/**
 	 * Purchase
 	 *
@@ -27,12 +35,10 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 	 */
 	private $gateway;
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Constructs and initialize an Shopp iDEAL data proxy
 	 *
-	 * @param Purchase $purchase
+	 * @param Purchase         $purchase
 	 * @param GatewayFramework $gateway
 	 */
 	public function __construct( $purchase, $gateway ) {
@@ -41,8 +47,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		$this->purchase = $purchase;
 		$this->gateway  = $gateway;
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get source indicator
@@ -53,8 +57,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 	public function get_source() {
 		return 'shopp';
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Get description
@@ -80,14 +82,14 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 	 * Get items
 	 *
 	 * @see Pronamic_Pay_PaymentDataInterface::get_items()
-	 * @return Pronamic_IDeal_Items
+	 * @return Items
 	 */
 	public function get_items() {
-		$items = new Pronamic_IDeal_Items();
+		$items = new Items();
 
 		// Item
 		// We only add one total item, because iDEAL cant work with negative price items (discount)
-		$item = new Pronamic_IDeal_Item();
+		$item = new Item();
 		$item->setNumber( $this->purchase->id );
 		$item->setDescription( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->purchase->id ) );
 		$item->setPrice( $this->purchase->total );
@@ -98,19 +100,11 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		return $items;
 	}
 
-	//////////////////////////////////////////////////
-	// Currency
-	//////////////////////////////////////////////////
-
 	public function get_currency_alphabetic_code() {
 		// @see /shopp/core/model/Lookup.php#L58
 		// @see /shopp/core/model/Gateway.php
 		return $this->gateway->baseop['currency']['code'];
 	}
-
-	//////////////////////////////////////////////////
-	// Customer
-	//////////////////////////////////////////////////
 
 	public function get_email() {
 		// @see /shopp/core/model/Purchase.php
@@ -147,13 +141,12 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		return $this->purchase->postcode;
 	}
 
-	//////////////////////////////////////////////////
-	// URL's
-	//
-	// shoppurl default pages:
-	// catalog, account, cart, checkout, confirm, thanks
-	//////////////////////////////////////////////////
-
+	/**
+	 * URL's
+	 *
+	 * Shoppurl default pages:
+	 * catalog, account, cart, checkout, confirm, thanks
+	 */
 	public function get_normal_return_url() {
 		// @see /shopp/core/functions.php#L1873
 		// @see /shopp/core/flow/Storefront.php#L1364
@@ -177,10 +170,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_PaymentData extends Pronamic_WP_Pay_Payme
 		// @see /shopp/core/flow/Storefront.php#L1364
 		return shoppurl( array( 'messagetype' => 'error' ), 'thanks' );
 	}
-
-	//////////////////////////////////////////////////
-	// Issuer
-	//////////////////////////////////////////////////
 
 	public function get_issuer_id() {
 		global $Shopp;

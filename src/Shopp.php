@@ -1,16 +1,21 @@
 <?php
 
+namespace Pronamic\WordPress\Pay\Extensions\Shopp;
+
+use Purchase;
+use Shopping;
+
 /**
  * Title: Shopp
  * Description:
- * Copyright: Copyright (c) 2005 - 2017
+ * Copyright: Copyright (c) 2005 - 2018
  * Company: Pronamic
  *
- * @author Remco Tolsma
+ * @author  Remco Tolsma
  * @version 1.0.0
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
+class Shopp {
 	/**
 	 * Payment status pending
 	 *
@@ -53,8 +58,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 	 */
 	const PAYMENT_STATUS_OPEN = 'OPEN';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Payment status authed
 	 *
@@ -71,8 +74,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 	 */
 	const PAYMENT_STATUS_CAPTURED = 'captured';
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Check if Shopp is active (Automattic/developer style)
 	 *
@@ -85,13 +86,13 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 		return defined( 'SHOPP_VERSION' );
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Version compare
 	 *
 	 * @param string $version
 	 * @param string $operator
+	 *
+	 * @return bool|mixed
 	 */
 	public static function version_compare( $version, $operator ) {
 		$result = true;
@@ -104,17 +105,15 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 		return $result;
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Check if the purchase is paid
 	 *
 	 * @param Purchase $purchase
+	 *
+	 * @return bool
 	 */
 	public static function is_purchase_paid( $purchase ) {
-		$is_paid = false;
-
-		if ( version_compare( SHOPP_VERSION, '1.2', '<' ) ) {
+		if ( self::version_compare( '1.2', '<' ) ) {
 			// In Shopp < 1.2 an paid purchase has not the status 'PENDING'
 			$is_paid = ! in_array(
 				$purchase->txnstatus,
@@ -137,13 +136,11 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 		return $is_paid;
 	}
 
-	//////////////////////////////////////////////////
-
 	/**
 	 * Update purchase status
 	 *
 	 * @param Purchase $purchase
-	 * @param string $status
+	 * @param string   $status
 	 */
 	public static function update_purchase_status( $purchase, $status ) {
 		global $wpdb;
@@ -154,8 +151,6 @@ class Pronamic_WP_Pay_Extensions_Shopp_Shopp {
 			array( 'id' => $purchase->id )
 		);
 	}
-
-	//////////////////////////////////////////////////
 
 	/**
 	 * Resession
