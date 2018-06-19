@@ -90,10 +90,10 @@ class PaymentData extends Pay_PaymentData {
 		// Item
 		// We only add one total item, because iDEAL cant work with negative price items (discount)
 		$item = new Item();
-		$item->setNumber( $this->purchase->id );
-		$item->setDescription( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->purchase->id ) );
-		$item->setPrice( $this->purchase->total );
-		$item->setQuantity( 1 );
+		$item->set_number( $this->purchase->id );
+		$item->set_description( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->purchase->id ) );
+		$item->set_price( $this->purchase->total );
+		$item->set_quantity( 1 );
 
 		$items->addItem( $item );
 
