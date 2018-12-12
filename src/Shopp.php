@@ -77,8 +77,8 @@ class Shopp {
 	/**
 	 * Check if Shopp is active (Automattic/developer style)
 	 *
-	 * @see https://bitbucket.org/Pronamic/shopp/src/12ebdb1d82a029bed956a58135833e3507baf432/Shopp.php?at=1.2.9#cl-29
-	 * @see https://github.com/Automattic/developer/blob/1.1.2/developer.php#L73
+	 * @link https://bitbucket.org/Pronamic/shopp/src/12ebdb1d82a029bed956a58135833e3507baf432/Shopp.php?at=1.2.9#cl-29
+	 * @link https://github.com/Automattic/developer/blob/1.1.2/developer.php#L73
 	 *
 	 * @return boolean
 	 */
@@ -97,7 +97,7 @@ class Shopp {
 	public static function version_compare( $version, $operator ) {
 		$result = true;
 
-		// @see https://github.com/ingenesis/shopp/blob/1.3/Shopp.php#L142
+		// @link https://github.com/ingenesis/shopp/blob/1.3/Shopp.php#L142
 		if ( defined( 'SHOPP_VERSION' ) ) {
 			$result = version_compare( SHOPP_VERSION, $version, $operator );
 		}
@@ -160,13 +160,13 @@ class Shopp {
 
 		if ( method_exists( 'Shopping', 'resession' ) ) {
 			// Shopp >= 1.2
-			// @see https://github.com/ingenesis/shopp/blob/1.2/Shopp.php#L362-L368
-			// @see https://github.com/ingenesis/shopp/blob/1.2/core/model/Shopping.php#L94-L135
+			// @link https://github.com/ingenesis/shopp/blob/1.2/Shopp.php#L362-L368
+			// @link https://github.com/ingenesis/shopp/blob/1.2/core/model/Shopping.php#L94-L135
 			Shopping::resession();
 		} elseif ( method_exists( $Shopp, 'resession' ) ) {
 			// Shopp <= 1.1.9.1
-			// @see https://github.com/ingenesis/shopp/blob/1.1.9.1/Shopp.php#L385-L423
-			// @see https://github.com/ingenesis/shopp/blob/1.1/Shopp.php#L382-L413
+			// @link https://github.com/ingenesis/shopp/blob/1.1.9.1/Shopp.php#L385-L423
+			// @link https://github.com/ingenesis/shopp/blob/1.1/Shopp.php#L382-L413
 			$Shopp->resession();
 		}
 	}

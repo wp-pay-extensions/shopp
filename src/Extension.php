@@ -67,7 +67,7 @@ class Extension {
 		// Add gateway
 		if ( Shopp::version_compare( '1.3', '<' ) ) {
 			// Shop 1.2.9 (or lower)
-			// @see https://github.com/ingenesis/shopp/blob/1.2.9/core/model/Modules.php#L123
+			// @link https://github.com/ingenesis/shopp/blob/1.2.9/core/model/Modules.php#L123
 			$path = dirname( __FILE__ );
 			$file = '/GatewayModule.php';
 
@@ -87,14 +87,14 @@ class Extension {
 			}
 		} else {
 			// Shop 1.3 (or higher)
-			// @see https://github.com/ingenesis/shopp/blob/1.3/core/library/Modules.php#L262
+			// @link https://github.com/ingenesis/shopp/blob/1.3/core/library/Modules.php#L262
 			$class = new ReflectionClass( 'GatewayModules' );
 
 			$property = $class->getProperty( 'paths' );
 			$property->setAccessible( true );
 
 			$paths = $property->getValue( $Shopp->Gateways );
-			// @see https://github.com/ingenesis/shopp/blob/1.3/Shopp.php#L193
+			// @link https://github.com/ingenesis/shopp/blob/1.3/Shopp.php#L193
 			$paths[] = dirname( __FILE__ );
 
 			$property->setValue( $Shopp->Gateways, $paths );
