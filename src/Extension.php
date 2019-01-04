@@ -12,7 +12,7 @@ use ReflectionClass;
 /**
  * Title: WordPress pay extension Shopp
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
