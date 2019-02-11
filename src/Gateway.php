@@ -14,7 +14,6 @@ use Pronamic\WordPress\Pay\Plugin;
  * @since      1.1.9
  * @subpackage Pronamic_Shopp_IDeal_GatewayModule
  **/
-
 class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implements GatewayModule {
 	/**
 	 * Shopp 1.1 or lower will retrieve this from the documentation block above
@@ -64,23 +63,25 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	public function __construct() {
 		parent::__construct();
 
-		// Setup
+		// Setup.
 		$this->setup( 'config_id' );
 
-		// Config ID
+		// Config ID.
 		$this->config_id = $this->settings['config_id'];
 
-		// Payment method
+		// Payment method.
 		$this->payment_method = $this->settings['payment_method'];
 
-		// Order processing
-		//add_filter('shopp_purchase_order_processing', array($this, 'orderProcessing'), 20, 2);
+		// Order processing.
+		// add_filter('shopp_purchase_order_processing', array($this, 'orderProcessing'), 20, 2);
 
-		// Checkout gateway inputs
+		// Checkout gateway inputs.
 		add_filter( 'shopp_checkout_gateway_inputs', array( $this, 'inputs' ), 50 );
 
-		// Actions
-		// @see /shopp/core/model/Gateway.php#L122
+		/*
+		 * Actions
+		 * @see /shopp/core/model/Gateway.php#L122
+		 */
 		$name = sanitize_key( __CLASS__ );
 
 		add_action( 'shopp_' . $name . '_sale', array( $this, 'sale' ) );
@@ -124,7 +125,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Sale
 	 *
-	 * @param OrderEventMessage $event
+	 * @param OrderEventMessage $event Event.
 	 */
 	public function sale( $event ) {
 		$this->auth( $event );
@@ -133,7 +134,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Auth
 	 *
-	 * @param OrderEventMessage $event
+	 * @param OrderEventMessage $event Event.
 	 */
 	public function auth( $event ) {
 		$order        = $this->Order;
@@ -141,21 +142,25 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 		$billing      = $order->Billing;
 		$paymethod    = $order->paymethod();
 
-		shopp_add_order_event( $event->order, 'authed', array(
-			'txnid'     => time(),
-			'amount'    => $order_totals->total,
-			'fees'      => 0,
-			'gateway'   => $paymethod->processor,
-			'paymethod' => $paymethod->label,
-			'paytype'   => $billing->cardtype,
-			'payid'     => $billing->card,
-		) );
+		shopp_add_order_event(
+			$event->order,
+			'authed',
+			array(
+				'txnid'     => time(),
+				'amount'    => $order_totals->total,
+				'fees'      => 0,
+				'gateway'   => $paymethod->processor,
+				'paymethod' => $paymethod->label,
+				'paytype'   => $billing->cardtype,
+				'payid'     => $billing->card,
+			)
+		);
 	}
 
 	/**
 	 * Capture
 	 *
-	 * @param OrderEventMessage $event
+	 * @param OrderEventMessage $event Event.
 	 */
 	public function capture( OrderEventMessage $event ) {
 	}
@@ -163,7 +168,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Refund
 	 *
-	 * @param OrderEventMessage $event
+	 * @param OrderEventMessage $event Event.
 	 */
 	public function refund( OrderEventMessage $event ) {
 	}
@@ -171,7 +176,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Void
 	 *
-	 * @param OrderEventMessage $event
+	 * @param OrderEventMessage $event Event.
 	 */
 	public function void( OrderEventMessage $event ) {
 	}
@@ -198,7 +203,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 */
 	public function process_order() {
 		// Sets transaction information to create the purchase record
-		// This call still exists for backward-compatibility (< 1.2)
+		// This call still exists for backward-compatibility (< 1.2).
 		if ( Shopp::version_compare( '1.2', '<' ) ) {
 			$this->Order->transaction( $this->txnid(), Shopp::PAYMENT_STATUS_PENDING );
 		}
@@ -212,18 +217,18 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	 * In Shopp version 1.1.9 the 'shopp_order_success' the purchase is given as first parameter,
 	 * in Shopp version 1.2+ the 'shopp_order_success' the purchase is not passed as parameter anymore
 	 *
-	 * @param Purchase $purchase
+	 * @param Purchase $purchase Purchase.
 	 */
 	public function order_success( $purchase = null ) {
 		// Check if the purchases is passed as first parameter, if not we
-		// will load the purchase from the global Shopp variable
+		// will load the purchase from the global Shopp variable.
 		if ( empty( $purchase ) ) {
 			global $Shopp;
 
 			$purchase = $Shopp->Purchase;
 		}
 
-		// Check gateway
+		// Check gateway.
 		$gateway = Plugin::get_gateway( $this->config_id );
 
 		if ( ! $gateway ) {
@@ -250,7 +255,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Is used
 	 *
-	 * @param Purchase $purchase
+	 * @param Purchase $purchase Purchase.
 	 *
 	 * @return bool
 	 */
@@ -267,7 +272,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	/**
 	 * Inputs
 	 *
-	 * @param $inputs
+	 * @param string $inputs Inputs.
 	 *
 	 * @return string
 	 */
@@ -283,7 +288,7 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 			$result .= $gateway->get_input_html();
 			$result .= '</div>';
 
-			// Only show extra fields on this paymethod/gateway
+			// Only show extra fields on this paymethod/gateway.
 			$script = '
 				(function($) {
 					$(document).bind("shopp_paymethod", function(event, paymethod) {
@@ -327,20 +332,28 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 	public function settings() {
 		$options = Plugin::get_config_select_options();
 
-		$this->ui->menu( 0, array(
-			'name'     => 'config_id',
-			'keyed'    => true,
-			'label'    => __( 'Select configuration', 'pronamic_ideal' ),
-			'selected' => $this->config_id,
-		), $options );
+		$this->ui->menu(
+			0,
+			array(
+				'name'     => 'config_id',
+				'keyed'    => true,
+				'label'    => __( 'Select configuration', 'pronamic_ideal' ),
+				'selected' => $this->config_id,
+			),
+			$options
+		);
 
 		$options = $this->get_payment_method_select_options();
 
-		$this->ui->menu( 1, array(
-			'name'     => 'payment_method',
-			'keyed'    => true,
-			'label'    => __( 'Select payment method', 'pronamic_ideal' ),
-			'selected' => $this->payment_method,
-		), $options );
+		$this->ui->menu(
+			1,
+			array(
+				'name'     => 'payment_method',
+				'keyed'    => true,
+				'label'    => __( 'Select payment method', 'pronamic_ideal' ),
+				'selected' => $this->payment_method,
+			),
+			$options
+		);
 	}
 }

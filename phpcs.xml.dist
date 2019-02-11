@@ -24,12 +24,15 @@
 		<exclude name="Squiz.Commenting" />
 		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
 
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+
 		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCase" />
 		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
 
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />
+		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching" />
 
-		<exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect" />
+		<exclude name="WordPress.Security.SafeRedirect.wp_redirect_wp_redirect" />
 	</rule>
 </ruleset>

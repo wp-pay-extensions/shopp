@@ -38,8 +38,8 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * Constructs and initialize an Shopp iDEAL data proxy
 	 *
-	 * @param Purchase         $purchase
-	 * @param GatewayFramework $gateway
+	 * @param Purchase         $purchase Shopp purchase.
+	 * @param GatewayFramework $gateway  Gateway.
 	 */
 	public function __construct( $purchase, $gateway ) {
 		parent::__construct();
@@ -51,7 +51,6 @@ class PaymentData extends Pay_PaymentData {
 	/**
 	 * Get source indicator
 	 *
-	 * @see Pronamic_Pay_PaymentDataInterface::get_source()
 	 * @return string
 	 */
 	public function get_source() {
@@ -65,7 +64,11 @@ class PaymentData extends Pay_PaymentData {
 	 * @return string
 	 */
 	public function get_description() {
-		return sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->purchase->id );
+		return sprintf(
+			/* translators: %s: order id */
+			__( 'Order %s', 'pronamic_ideal' ),
+			$this->purchase->id
+		);
 	}
 
 	/**
@@ -88,10 +91,16 @@ class PaymentData extends Pay_PaymentData {
 		$items = new Items();
 
 		// Item
-		// We only add one total item, because iDEAL cant work with negative price items (discount)
+		// We only add one total item, because iDEAL cant work with negative price items (discount).
 		$item = new Item();
 		$item->set_number( $this->purchase->id );
-		$item->set_description( sprintf( __( 'Order %s', 'pronamic_ideal' ), $this->purchase->id ) );
+		$item->set_description(
+			sprintf(
+				/* translators: %s: order id */
+				__( 'Order %s', 'pronamic_ideal' ),
+				$this->purchase->id
+			)
+		);
 		$item->set_price( $this->purchase->total );
 		$item->set_quantity( 1 );
 
@@ -100,49 +109,89 @@ class PaymentData extends Pay_PaymentData {
 		return $items;
 	}
 
+	/**
+	 * Get currency alphabetic code.
+	 *
+	 * @return string
+	 */
 	public function get_currency_alphabetic_code() {
 		// @see /shopp/core/model/Lookup.php#L58
 		// @see /shopp/core/model/Gateway.php
 		return $this->gateway->baseop['currency']['code'];
 	}
 
+	/**
+	 * Get email address.
+	 *
+	 * @return string
+	 */
 	public function get_email() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->email;
 	}
 
+	/**
+	 * Get first name.
+	 *
+	 * @return string
+	 */
 	public function get_first_name() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->firstname;
 	}
 
+	/**
+	 * Get last name.
+	 *
+	 * @return string
+	 */
 	public function get_last_name() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->lastname;
 	}
 
+	/**
+	 * Get customer name.
+	 *
+	 * @return string
+	 */
 	public function get_customer_name() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->firstname . ' ' . $this->purchase->lastname;
 	}
 
+	/**
+	 * Get address.
+	 *
+	 * @return string
+	 */
 	public function get_address() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->address;
 	}
 
+	/**
+	 * Get city.
+	 *
+	 * @return string
+	 */
 	public function get_city() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->city;
 	}
 
+	/**
+	 * Get ZIP.
+	 *
+	 * @return string
+	 */
 	public function get_zip() {
 		// @see /shopp/core/model/Purchase.php
 		return $this->purchase->postcode;
 	}
 
 	/**
-	 * URL's
+	 * Get normal return URL.
 	 *
 	 * Shoppurl default pages:
 	 * catalog, account, cart, checkout, confirm, thanks
@@ -153,24 +202,44 @@ class PaymentData extends Pay_PaymentData {
 		return shoppurl( array( 'messagetype' => 'open' ), 'thanks' );
 	}
 
+	/**
+	 * Get cancel URL.
+	 *
+	 * @return string
+	 */
 	public function get_cancel_url() {
 		// @see /shopp/core/functions.php#L1873
 		// @see /shopp/core/flow/Storefront.php#L1364
 		return shoppurl( array( 'messagetype' => 'cancelled' ), 'thanks' );
 	}
 
+	/**
+	 * Get success URL.
+	 *
+	 * @return string
+	 */
 	public function get_success_url() {
 		// @see /shopp/core/functions.php#L1873
 		// @see /shopp/core/flow/Storefront.php#L1364
 		return shoppurl( false, 'thanks' );
 	}
 
+	/**
+	 * Get error URL.
+	 *
+	 * @return string
+	 */
 	public function get_error_url() {
 		// @see /shopp/core/functions.php#L1873
 		// @see /shopp/core/flow/Storefront.php#L1364
 		return shoppurl( array( 'messagetype' => 'error' ), 'thanks' );
 	}
 
+	/**
+	 * Get issuer ID.
+	 *
+	 * @return string
+	 */
 	public function get_issuer_id() {
 		global $Shopp;
 
