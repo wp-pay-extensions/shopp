@@ -33,11 +33,35 @@
 			"php": "5.3.3"
 		}
 	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "ingenesis/shopp",
+				"version": "1.4",
+				"dist": {
+					"url": "https://github.com/ingenesis/shopp/archive/1.4.zip",
+					"type": "zip"
+				},
+				"source": {
+					"url": "https://github.com/ingenesis/shopp",
+					"type": "github",
+					"reference": "tags/1.4"
+				},
+				"autoload": {
+					"classmap": [
+						"."
+					]
+				}
+			}
+		}
+	],
 	"require": {
 		"php": "^5.3",
 		"wp-pay/core": "^2.1"
 	},
 	"require-dev": {
+		"ingenesis/shopp": "1.4",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5",
 		"php-coveralls/php-coveralls": "^1.1",
 		"phpcompatibility/php-compatibility": "^9.1",
