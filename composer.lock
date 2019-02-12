@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fa67ee43b749debd41d55693c845832",
+    "content-hash": "95711a10692e72f01330b67c36afed52",
     "packages": [
         {
             "name": "composer/installers",
@@ -542,6 +542,27 @@
             ],
             "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18T18:23:50+00:00"
+        },
+        {
+            "name": "ingenesis/shopp",
+            "version": "1.4",
+            "source": {
+                "type": "github",
+                "url": "https://github.com/ingenesis/shopp",
+                "reference": "tags/1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/ingenesis/shopp/archive/1.4.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            }
         },
         {
             "name": "pdepend/pdepend",
