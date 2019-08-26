@@ -12,7 +12,7 @@ use ReflectionClass;
 /**
  * Title: WordPress pay extension Shopp
  * Description:
- * Copyright: Copyright (c) 2005 - 2018
+ * Copyright: 2005-2019 Pronamic
  * Company: Pronamic
  *
  * @author  Remco Tolsma
@@ -29,7 +29,7 @@ class Extension {
 	 * Bootstrap
 	 */
 	public static function bootstrap() {
-		// Actions
+		// Actions.
 		add_action( 'shopp_init', array( __CLASS__, 'shopp_init' ) );
 	}
 
@@ -60,14 +60,17 @@ class Extension {
 	public static function add_gateway() {
 		global $Shopp;
 
-		// Class aliases
+		// Class aliases.
 		class_alias( 'Pronamic_WP_Pay_Extensions_Shopp_Gateway', 'Pronamic_Shopp_IDeal_GatewayModule' );
 		class_alias( 'Pronamic_WP_Pay_Extensions_Shopp_Gateway', 'Pronamic_Shopp_Gateways_IDeal_IDeal' );
 
-		// Add gateway
+		// Add gateway.
 		if ( Shopp::version_compare( '1.3', '<' ) ) {
-			// Shop 1.2.9 (or lower)
-			// @link https://github.com/ingenesis/shopp/blob/1.2.9/core/model/Modules.php#L123
+			/*
+			 * Shop 1.2.9 (or lower)
+			 *
+			 * @link https://github.com/ingenesis/shopp/blob/1.2.9/core/model/Modules.php#L123
+			 */
 			$path = dirname( __FILE__ );
 			$file = '/GatewayModule.php';
 
@@ -86,8 +89,11 @@ class Extension {
 				}
 			}
 		} else {
-			// Shop 1.3 (or higher)
-			// @link https://github.com/ingenesis/shopp/blob/1.3/core/library/Modules.php#L262
+			/*
+			 * Shop 1.3 (or higher)
+			 *
+			 * @link https://github.com/ingenesis/shopp/blob/1.3/core/library/Modules.php#L262
+			 */
 			$class = new ReflectionClass( 'GatewayModules' );
 
 			$property = $class->getProperty( 'paths' );
@@ -104,8 +110,8 @@ class Extension {
 	/**
 	 * Update lead status of the specified advanced payment
 	 *
-	 * @param Payment $payment
-	 * @param bool    $can_redirect
+	 * @param Payment $payment      Payment.
+	 * @param bool    $can_redirect Can redirect.
 	 */
 	public static function status_update( Payment $payment, $can_redirect = false ) {
 		if ( $payment->get_source() !== self::SLUG || ! self::is_shopp_supported() ) {
@@ -165,8 +171,8 @@ class Extension {
 	/**
 	 * Source text.
 	 *
-	 * @param string  $text
-	 * @param Payment $payment
+	 * @param string  $text    Source text.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
@@ -175,11 +181,18 @@ class Extension {
 
 		$text .= sprintf(
 			'<a href="%s">%s</a>',
-			add_query_arg( array(
-				'page' => 'shopp-orders',
-				'id'   => $payment->get_source_id(),
-			), admin_url( 'admin.php' ) ),
-			sprintf( __( 'Order #%s', 'pronamic_ideal' ), $payment->get_source_id() )
+			add_query_arg(
+				array(
+					'page' => 'shopp-orders',
+					'id'   => $payment->get_source_id(),
+				),
+				admin_url( 'admin.php' )
+			),
+			sprintf(
+				/* translators: %s: payment source id */
+				__( 'Order #%s', 'pronamic_ideal' ),
+				$payment->get_source_id()
+			)
 		);
 
 		return $text;
@@ -188,8 +201,8 @@ class Extension {
 	/**
 	 * Source description.
 	 *
-	 * @param string  $description
-	 * @param Payment $payment
+	 * @param string  $description Source description.
+	 * @param Payment $payment     Payment.
 	 *
 	 * @return string
 	 */
@@ -200,16 +213,19 @@ class Extension {
 	/**
 	 * Source URL.
 	 *
-	 * @param string  $url
-	 * @param Payment $payment
+	 * @param string  $url     Source URL.
+	 * @param Payment $payment Payment.
 	 *
 	 * @return string
 	 */
 	public static function source_url( $url, Payment $payment ) {
-		$url = add_query_arg( array(
-			'page' => 'shopp-orders',
-			'id'   => $payment->get_source_id(),
-		), admin_url( 'admin.php' ) );
+		$url = add_query_arg(
+			array(
+				'page' => 'shopp-orders',
+				'id'   => $payment->get_source_id(),
+			),
+			admin_url( 'admin.php' )
+		);
 
 		return $url;
 	}
