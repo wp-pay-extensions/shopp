@@ -3,7 +3,7 @@
 namespace Pronamic\WordPress\Pay\Extensions\Shopp;
 
 use ModuleFile;
-use Pronamic\WordPress\Pay\Core\Statuses;
+use Pronamic\WordPress\Pay\Payments\PaymentStatus;
 use Pronamic\WordPress\Pay\Payments\Payment;
 use Pronamic_WP_Pay_Extensions_Shopp_Gateway;
 use Purchase;
@@ -131,23 +131,23 @@ class Extension {
 		$url = $data->get_normal_return_url();
 
 		switch ( $payment->status ) {
-			case Statuses::CANCELLED:
+			case PaymentStatus::CANCELLED:
 				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_CANCELLED );
 
 				$url = $data->get_cancel_url();
 
 				break;
-			case Statuses::EXPIRED:
+			case PaymentStatus::EXPIRED:
 				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_EXPIRED );
 
 				break;
-			case Statuses::FAILURE:
+			case PaymentStatus::FAILURE:
 				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_FAILURE );
 
 				$url = $data->get_error_url();
 
 				break;
-			case Statuses::SUCCESS:
+			case PaymentStatus::SUCCESS:
 				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_CAPTURED );
 
 				$url = $data->get_success_url();
@@ -155,7 +155,7 @@ class Extension {
 				Shopp::resession();
 
 				break;
-			case Statuses::OPEN:
+			case PaymentStatus::OPEN:
 				Shopp::update_purchase_status( $purchase, Shopp::PAYMENT_STATUS_OPEN );
 
 				break;
