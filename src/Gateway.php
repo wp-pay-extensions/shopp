@@ -239,16 +239,16 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		$data = new PaymentData( $purchase, $this );
 
-		$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
+		// Start.
+		try {
+			$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			Plugin::render_errors( $error );
+			// Redirect.
+			$gateway->redirect( $payment );
+		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
+			$e->render();
 
 			exit;
-		} else {
-			$gateway->redirect( $payment );
 		}
 	}
 

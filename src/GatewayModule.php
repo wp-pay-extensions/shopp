@@ -227,15 +227,15 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		$data = new PaymentData( $purchase, $this );
 
-		$payment = Plugin::start( $this->config_id, $gateway, $data );
+		// Start.
+		try {
+			$payment = Plugin::start( $this->config_id, $gateway, $data );
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			// @todo what todo?
-			exit;
-		} else {
+			// Redirect.
 			$gateway->redirect( $payment );
+		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
+			// @todo What todo on error?
+			exit;
 		}
 	}
 
