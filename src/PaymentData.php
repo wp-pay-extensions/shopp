@@ -104,7 +104,7 @@ class PaymentData extends Pay_PaymentData {
 		$item->set_price( $this->purchase->total );
 		$item->set_quantity( 1 );
 
-		$items->addItem( $item );
+		$items->add_item( $item );
 
 		return $items;
 	}
