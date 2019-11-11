@@ -233,7 +233,7 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 			// Redirect.
 			$gateway->redirect( $payment );
-		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
+		} catch ( \Exception $e ) {
 			// @todo What todo on error?
 			exit;
 		}

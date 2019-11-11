@@ -245,8 +245,8 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 			// Redirect.
 			$gateway->redirect( $payment );
-		} catch ( \Pronamic\WordPress\Pay\PayException $e ) {
-			$e->render();
+		} catch ( \Exception $e ) {
+			Plugin::render_exception( $e );
 
 			exit;
 		}
