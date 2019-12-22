@@ -8,9 +8,9 @@ use Pronamic\WordPress\Pay\Plugin;
  * Gateway module iDEAL.
  *
  * @author Pronamic
- * @version 1.0
  * @copyright Pronamic
  * @package shopp
+ * @version 2.0.3
  * @since 1.1.9
  * @subpackage Pronamic_Shopp_IDeal_GatewayModule
  **/
@@ -227,15 +227,15 @@ class Pronamic_Shopp_IDeal_GatewayModule extends GatewayFramework implements Gat
 
 		$data = new PaymentData( $purchase, $this );
 
-		$payment = Plugin::start( $this->config_id, $gateway, $data );
+		// Start.
+		try {
+			$payment = Plugin::start( $this->config_id, $gateway, $data );
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			// @todo what todo?
-			exit;
-		} else {
+			// Redirect.
 			$gateway->redirect( $payment );
+		} catch ( \Exception $e ) {
+			// @todo What todo on error?
+			exit;
 		}
 	}
 

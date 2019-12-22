@@ -8,9 +8,9 @@ use Pronamic\WordPress\Pay\Plugin;
  * Pronamic Pay
  *
  * @author     Pronamic
- * @version    2.0.0
  * @copyright  Pronamic
  * @package    shopp
+ * @version    2.0.3
  * @since      1.1.9
  * @subpackage Pronamic_Shopp_IDeal_GatewayModule
  **/
@@ -239,16 +239,16 @@ class Pronamic_WP_Pay_Extensions_Shopp_Gateway extends GatewayFramework implemen
 
 		$data = new PaymentData( $purchase, $this );
 
-		$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
+		// Start.
+		try {
+			$payment = Plugin::start( $this->config_id, $gateway, $data, $this->payment_method );
 
-		$error = $gateway->get_error();
-
-		if ( is_wp_error( $error ) ) {
-			Plugin::render_errors( $error );
+			// Redirect.
+			$gateway->redirect( $payment );
+		} catch ( \Exception $e ) {
+			Plugin::render_exception( $e );
 
 			exit;
-		} else {
-			$gateway->redirect( $payment );
 		}
 	}
 
