@@ -16,7 +16,7 @@ use ReflectionClass;
  * Company: Pronamic
  *
  * @author  Remco Tolsma
- * @version 1.0.6
+ * @version 2.0.3
  * @since   1.0.0
  */
 class Extension {
