@@ -1,7 +1,7 @@
 {
 	"name": "wp-pay-extensions/shopp",
-	"description": "Shopp driver for the WordPress payment processing library.",
-	"keywords": ["wordpress", "wp", "pay", "shopp", "extension", "pronamic"],
+	"description": "✗ [DEPRECATED] Shopp driver for the WordPress payment processing library.",
+	"keywords": ["wordpress", "wp", "pay", "shopp", "extension", "pronamic", "deprecated"],
 	"homepage": "http://www.wp-pay.org/extensions/shopp/",
 	"license": "GPL-3.0-or-later",
 	"authors": [

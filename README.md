@@ -1,4 +1,4 @@
-# WordPress Pay Extension: Shopp
+# [DEPRECATED] WordPress Pay Extension: Shopp
 
 **Shopp driver for the WordPress payment processing library.**
 
